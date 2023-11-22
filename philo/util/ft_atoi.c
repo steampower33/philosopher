@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 22:13:48 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/11/21 16:36:50 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:49:30 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	ft_atoi(const char *str)
 	start_idx = str_idx;
 	while (str[str_idx])
 	{
-		if (!ft_isdigit(str[str_idx]))
-			break ;
+		if (!('0' <= str[str_idx] && str[str_idx] <= '9'))
+			return (0);
 		str_idx++;
 	}
 	return (minus * ft_atoi_func(str, start_idx, str_idx));
