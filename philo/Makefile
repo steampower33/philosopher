@@ -3,17 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+         #
+#    By: seungmin <seungmin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 14:03:21 by seunlee2          #+#    #+#              #
-#    Updated: 2023/11/21 16:38:10 by seunlee2         ###   ########.fr        #
+#    Updated: 2023/11/23 16:57:49 by seungmin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 SRCS = main/philo.c \
 		util/ft_atoi.c \
-		
 
 OBJS = $(SRCS:.c=.o)
 CC = cc

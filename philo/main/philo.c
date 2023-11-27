@@ -3,42 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seungmin <seungmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:18 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/11/22 18:58:37 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:26:20 by seungmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	chk_arg(int argc)
+int	chk_arg(int argc, char **argv, t_arg *arg)
 {
 	if (!(argc == 5 || argc == 6))
-		exit(1);
+		return (1);
+	arg->num_of_philo = ft_atoi(argv[1]);
+	arg->time_to_die = ft_atoi(argv[2]);
+	arg->time_to_eat = ft_atoi(argv[3]);
+	arg->time_to_sleep = ft_atoi(argv[4]);
+	if (arg->num_of_philo <= 0 || arg->time_to_die < 0
+		|| arg->time_to_eat < 0 || arg->time_to_sleep < 0)
+		return (1);
+	arg->max_eat = 0;
+	if (argc == 6)
+	{
+		arg->max_eat = ft_atoi(argv[5]);
+		if (arg->max_eat < 0)
+			return (1);
+	}
+	return (0);
 }
 
-void	init_arg(int argc, char **argv, t_philo *philo)
+void	init_philo(t_philo *philo, t_arg *arg)
 {
-	philo->num = ft_atoi(argv[1]);
-	philo->die = ft_atoi(argv[2]);
-	philo->eat = ft_atoi(argv[3]);
-	philo->sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		philo->max_eat = ft_atoi(argv[5]);
 	
-	printf("%d\n", ft_atoi(argv[1]));
-	printf("%d\n", ft_atoi(argv[2]));
-	printf("%d\n", ft_atoi(argv[3]));
-	printf("%d\n", ft_atoi(argv[4]));
-	if (argc == 6)
-		printf("%u\n", ft_atoi(argv[5]));
 }
 
 int	main(int argc, char **argv)
 {
 	t_philo	philo;
+	t_arg	arg;
 
-	chk_arg(argc);
-	init_arg(argc, argv, &philo);
+	if (chk_arg(argc, argv, &arg))
+		return (1);
+	init_philo(&philo, &arg);
+	return (0);
 }
