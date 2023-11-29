@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungmin <seungmin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:37 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/11/24 19:10:37 by seungmin         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:28:38 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,25 @@
 
 typedef struct s_philo
 {
-	struct s_arg	*arg;
+	pthread_t			thread;
+	struct s_resource	*rsrc;
+	int					id;
+	int					left;
+	int					right;
+	int					cnt_to_eat;
 }	t_philo;
 
-typedef struct s_arg
+typedef struct s_resource
 {
-	int	num_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	max_eat;
-}	t_arg;
+	pthread_mutex_t		*fork;
+	pthread_mutex_t		print;
+	int					num_of_philo;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					max_eat;
+}	t_resource;
 
 int	ft_atoi(const char *str);
-
+int	error_handler(char *str, int error_code);
 #endif
