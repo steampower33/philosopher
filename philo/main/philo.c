@@ -6,88 +6,52 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:18 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/11/29 21:08:13 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:25:48 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_arguments(int argc, char **argv, t_resource *rsrc)
+void	do_work(t_philo *philo, t_resource *rsrc)
 {
-	if (!(argc == 5 || argc == 6))
-		return (1);
-	rsrc->num_of_philo = ft_atoi(argv[1]);
-	rsrc->time_to_die = ft_atoi(argv[2]);
-	rsrc->time_to_eat = ft_atoi(argv[3]);
-	rsrc->time_to_sleep = ft_atoi(argv[4]);
-	if (rsrc->num_of_philo <= 0 || rsrc->time_to_die < 0
-		|| rsrc->time_to_eat < 0 || rsrc->time_to_sleep < 0)
-		return (1);
-	rsrc->max_eat = 0;
-	if (argc == 6)
+	pthread_mutex_lock(&rsrc->fork[philo->left]);
+	// print
+	if (rsrc->num_of_philo != 1)
 	{
-		rsrc->max_eat = ft_atoi(argv[5]);
-		if (rsrc->max_eat < 0)
-			return (1);
+		// right
 	}
-	return (0);
+	pthread_mutex_unlock(&rsrc->fork[philo->left]);
 }
 
-int	init_philo(t_philo **philo, t_resource *rsrc)
+void	*do_thread(void	*argv)
 {
-	int	idx;
+	t_philo		*philo;
+	t_resource	*rsrc;
 
-	*philo = (t_philo *)malloc(sizeof(t_philo) * rsrc->num_of_philo);
-	if (!(*philo))
-		return (1);
-	idx = 0;
-	while (idx < rsrc->num_of_philo)
+	philo = argv;
+	rsrc = philo->rsrc;
+	while (rsrc->philo_done != 0)
 	{
-		(*philo)[idx].rsrc = rsrc;
-		(*philo)[idx].id = idx;
-		(*philo)[idx].left = idx;
-		(*philo)[idx].right = (idx + 1) % rsrc->num_of_philo;
-		(*philo)[idx].cnt_to_eat = 0;
-		idx++;
+		do_work(philo, rsrc);
 	}
-	return (0);
+	return (NULL);
 }
 
-int	destroy_mutex(t_resource *rsrc, int last)
-{
-	pthread_mutex_destroy(&(rsrc->print));
-	while (0 <= last)
-	{
-		pthread_mutex_destroy(&(rsrc->fork[last]));
-		last--;
-	}
-	pthread_mutex_destroy(rsrc->fork);
-	return (1);
-}
-
-int	init_mutex(t_resource *rsrc)
+int	do_philo(t_philo *philo, t_resource *rsrc)
 {
 	int	idx;
 
-	if (pthread_mutex_init(&(rsrc->print), NULL))
-		return (1);
-	rsrc->fork = (pthread_mutex_t *)
-		malloc(sizeof(pthread_mutex_t) * rsrc->num_of_philo);
-	if (!(rsrc->fork))
-		return (1);
 	idx = 0;
 	while (idx < rsrc->num_of_philo)
 	{
-		if (pthread_mutex_init(&(rsrc->fork[idx]), NULL))
-			return (destroy_mutex(rsrc, idx));
-		if (idx == 4)
-			return (destroy_mutex(rsrc, idx));
+		if (pthread_create(&philo[idx].thread,
+				NULL, do_thread, (void *)&philo[idx]))
+			return (detach_pthread(philo, idx));
 		idx++;
 	}
+	join_pthread(philo);
 	return (0);
 }
-
-
 
 int	main(int argc, char **argv)
 {
@@ -100,8 +64,9 @@ int	main(int argc, char **argv)
 		return (error_handler("mutex init error", 1));
 	if (init_philo(&philo, &rsrc))
 		return (error_handler("philo init error", 1));
-	// int	idx = 0;
-	// while (idx < rsrc.num_of_philo)
-	// 	printf("%d\n", philo[idx++].id);
+	if (do_philo(philo, &rsrc))
+		return (error_handler("do philo error", 1));
+	free_all(&rsrc);
+	// system("leaks philo");
 	return (0);
 }

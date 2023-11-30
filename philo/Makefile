@@ -6,14 +6,16 @@
 #    By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 14:03:21 by seunlee2          #+#    #+#              #
-#    Updated: 2023/11/29 21:06:26 by seunlee2         ###   ########.fr        #
+#    Updated: 2023/11/30 17:19:37 by seunlee2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 SRCS = main/philo.c \
+		main/inic.c \
 		util/ft_atoi.c \
 		util/util.c \
+		util/free.c \
 
 OBJS = $(SRCS:.c=.o)
 CC = cc
