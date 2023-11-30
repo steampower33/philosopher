@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:37 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/11/30 17:22:44 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:21:51 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_philo
 	int					left;
 	int					right;
 	int					cnt_to_eat;
+	int					last_eat_time;
 }	t_philo;
 
 typedef struct s_resource
@@ -39,22 +40,30 @@ typedef struct s_resource
 	int					time_to_sleep;
 	int					max_eat;
 	int					philo_done;
+	int					time_to_start;
 }	t_resource;
 
-int		init_rsrc(int argc, char **argv, t_resource *rsrc);
-int		init_philo(t_philo **philo, t_resource *rsrc);
-int		init_mutex(t_resource *rsrc);
+int			init_rsrc(int argc, char **argv, t_resource *rsrc);
+int			init_philo(t_philo **philo, t_resource *rsrc);
+int			init_mutex(t_resource *rsrc);
 
-void	do_work(t_philo *philo, t_resource *rsrc);
-void	*do_thread(void	*argv);
-int		do_philo(t_philo *philo, t_resource *rsrc);
+void		philo_print(t_resource *rsrc, int id, char *str);
+void		philo_eat(t_philo *philo, t_resource *rsrc);
+void		philo_sleep(t_philo *philo, t_resource *rsrc);
+void		philo_think(t_philo *philo, t_resource *rsrc);
 
-void	join_pthread(t_philo *philo);
-int		detach_pthread(t_philo *philo, int last);
-int		destroy_mutex(t_resource *rsrc, int last);
-void	free_all(t_resource *rsrc);
+void		*philo_work(void *argv);
+int			start_philo(t_philo *philo, t_resource *rsrc);
 
-int		ft_atoi(const char *str);
+void		join_pthread(t_philo *philo);
+int			detach_pthread(t_philo *philo, int last);
+int			destroy_mutex(t_resource *rsrc, int last);
+void		free_all(t_resource *rsrc);
 
-int		error_handler(char *str, int error_code);
+int			ft_atoi(const char *str);
+
+void		spend_time(t_resource *rsrc, int time_to_spend);
+long long	get_time(void);
+
+int			error_handler(char *str, int error_code);
 #endif
