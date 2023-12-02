@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:37 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 01:38:55 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 05:24:46 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_resource
 	long long			time_to_start;
 	pthread_mutex_t		*fork;
 	pthread_mutex_t		print;
+	pthread_mutex_t		monitor;
 	int					num_of_philo;
 	long long			time_to_die;
 	long long			time_to_eat;
