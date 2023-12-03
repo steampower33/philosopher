@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:48:00 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 05:24:37 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 09:24:34 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,13 @@ int	init_mutex(t_resource *rsrc)
 {
 	int	idx;
 
-	if (pthread_mutex_init(&(rsrc->print), NULL))
+	if (pthread_mutex_init(&rsrc->print, NULL))
 		return (1);
-	if (pthread_mutex_init(&(rsrc->monitor), NULL))
+	if (pthread_mutex_init(&rsrc->last_eat_time_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&rsrc->philo_stop_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&rsrc->philo_done_mutex, NULL))
 		return (1);
 	rsrc->fork = (pthread_mutex_t *)
 		malloc(sizeof(pthread_mutex_t) * rsrc->num_of_philo);

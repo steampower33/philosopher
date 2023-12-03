@@ -6,7 +6,7 @@
 #    By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 14:03:21 by seunlee2          #+#    #+#              #
-#    Updated: 2023/12/03 02:24:55 by seunlee2         ###   ########.fr        #
+#    Updated: 2023/12/03 09:59:03 by seunlee2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,13 @@ SRCS =	main/philo.c \
 OBJS = $(SRCS:.c=.o)
 CC = cc
 INC = -I./include
-CFLAGS = -Wall -Wextra -Werror $(INC) -pthread -fsanitize=thread -g
-
+CFLAGS = -Wall -Wextra -Werror -pthread
+LDFLAGS = -pthread
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 all: $(NAME)
 

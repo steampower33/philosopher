@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:37 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 05:24:46 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 09:52:02 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,19 @@ typedef struct s_philo
 
 typedef struct s_resource
 {
-	long long			time_to_start;
 	pthread_mutex_t		*fork;
 	pthread_mutex_t		print;
-	pthread_mutex_t		monitor;
+	pthread_mutex_t		last_eat_time_mutex;
 	int					num_of_philo;
 	long long			time_to_die;
 	long long			time_to_eat;
 	long long			time_to_sleep;
 	int					max_eat;
 	int					philo_done;
+	pthread_mutex_t		philo_done_mutex;
 	int					philo_stop;
+	pthread_mutex_t		philo_stop_mutex;
+	long long			time_to_start;
 }	t_resource;
 
 int			init_rsrc(int argc, char **argv, t_resource *rsrc);
@@ -54,6 +56,8 @@ void		philo_eat(t_philo *philo, t_resource *rsrc, int first, int second);
 void		philo_sleep(t_philo *philo, t_resource *rsrc);
 void		philo_think(t_philo *philo, t_resource *rsrc);
 
+void		is_philo_dead_while(t_philo **philo, t_resource **rsrc);
+void		is_philo_dead(t_philo *philo, t_resource *rsrc);
 void		*philo_work(void *argv);
 int			start_philo(t_philo *philo, t_resource *rsrc);
 

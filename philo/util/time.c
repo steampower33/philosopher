@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 21:11:22 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 05:24:20 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 09:20:52 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,15 @@ void	spend_time(t_resource *rsrc, long long time_to_spend)
 	long long	now;
 
 	start = get_now();
-	while (rsrc->philo_stop != 1)
+	while (1)
 	{
+		pthread_mutex_lock(&rsrc->philo_stop_mutex);
+		if (rsrc->philo_stop == 1)
+		{
+			pthread_mutex_unlock(&rsrc->philo_stop_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&rsrc->philo_stop_mutex);
 		now = get_now();
 		if ((now - start) >= time_to_spend)
 			break ;

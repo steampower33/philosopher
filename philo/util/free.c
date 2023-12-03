@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:46:57 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/02 21:50:52 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 09:24:16 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,7 @@ void	free_all(t_resource *rsrc)
 		pthread_mutex_destroy(&rsrc->fork[idx++]);
 	free(rsrc->fork);
 	pthread_mutex_destroy(&rsrc->print);
+	pthread_mutex_destroy(&rsrc->last_eat_time_mutex);
+	pthread_mutex_destroy(&rsrc->philo_stop_mutex);
+	pthread_mutex_destroy(&rsrc->philo_done_mutex);
 }
