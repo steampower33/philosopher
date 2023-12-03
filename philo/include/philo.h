@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:03:37 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 09:52:02 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 15:36:15 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_resource
 	pthread_mutex_t		print;
 	pthread_mutex_t		last_eat_time_mutex;
 	int					num_of_philo;
-	long long			time_to_die;
-	long long			time_to_eat;
-	long long			time_to_sleep;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
 	int					max_eat;
 	int					philo_done;
 	pthread_mutex_t		philo_done_mutex;
@@ -52,7 +52,7 @@ int			init_philo(t_philo **philo, t_resource *rsrc);
 int			init_mutex(t_resource *rsrc);
 
 void		philo_print(t_resource *rsrc, int id, char *str);
-void		philo_eat(t_philo *philo, t_resource *rsrc, int first, int second);
+void		philo_eat(t_philo *philo, t_resource *rsrc);
 void		philo_sleep(t_philo *philo, t_resource *rsrc);
 void		philo_think(t_philo *philo, t_resource *rsrc);
 

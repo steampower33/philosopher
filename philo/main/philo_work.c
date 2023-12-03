@@ -6,19 +6,19 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 21:15:12 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 09:57:15 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/03 15:39:18 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_philo *philo, t_resource *rsrc, int first, int second)
+void	philo_eat(t_philo *philo, t_resource *rsrc)
 {
-	pthread_mutex_lock(&rsrc->fork[first]);
+	pthread_mutex_lock(&rsrc->fork[philo->left]);
 	philo_print(rsrc, philo->id, "has taken a fork");
 	if (rsrc->num_of_philo != 1)
 	{
-		pthread_mutex_lock(&rsrc->fork[second]);
+		pthread_mutex_lock(&rsrc->fork[philo->right]);
 		philo_print(rsrc, philo->id, "has taken a fork");
 		philo_print(rsrc, philo->id, "is eating");
 		pthread_mutex_lock(&rsrc->last_eat_time_mutex);
@@ -26,9 +26,9 @@ void	philo_eat(t_philo *philo, t_resource *rsrc, int first, int second)
 		pthread_mutex_unlock(&rsrc->last_eat_time_mutex);
 		philo->cnt_to_eat += 1;
 		spend_time(rsrc, rsrc->time_to_eat);
-		pthread_mutex_unlock(&rsrc->fork[second]);
+		pthread_mutex_unlock(&rsrc->fork[philo->right]);
 	}
-	pthread_mutex_unlock(&rsrc->fork[first]);
+	pthread_mutex_unlock(&rsrc->fork[philo->left]);
 }
 
 void	philo_sleep(t_philo *philo, t_resource *rsrc)
@@ -67,7 +67,7 @@ void	*philo_work(void *argv)
 			break ;
 		if (philo->id % 2 == 1)
 			usleep(500);
-		philo_eat(philo, rsrc, philo->left, philo->right);
+		philo_eat(philo, rsrc);
 		if (rsrc->num_of_philo == 1)
 			spend_time(rsrc, rsrc->time_to_sleep);
 		if (rsrc->max_eat == philo->cnt_to_eat)
