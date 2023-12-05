@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:46:57 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 15:24:12 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:49:45 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,6 @@ int	detach_pthread(t_philo *philo, int last)
 	return (1);
 }
 
-int	destroy_mutex(t_resource *rsrc, int last)
-{
-	pthread_mutex_destroy(&(rsrc->print));
-	while (0 <= last)
-	{
-		pthread_mutex_destroy(&(rsrc->fork[last]));
-		last--;
-	}
-	pthread_mutex_destroy(rsrc->fork);
-	return (1);
-}
-
 void	join_pthread(t_philo *philo)
 {
 	int	idx;
@@ -44,16 +32,21 @@ void	join_pthread(t_philo *philo)
 	free(philo);
 }
 
-void	free_all(t_resource *rsrc)
+void	free_rsrc(t_resource *rsrc)
 {
 	int	idx;
 
-	idx = 0;
-	while (idx < rsrc->num_of_philo)
-		pthread_mutex_destroy(&rsrc->fork[idx++]);
-	free(rsrc->fork);
+	if (rsrc->forks)
+		free(rsrc->forks);
+	if (rsrc->forks_mutex)
+	{
+		idx = 0;
+		while (idx < rsrc->num_of_philo)
+			pthread_mutex_destroy(&rsrc->forks_mutex[idx++]);
+		free(rsrc->forks_mutex);
+	}
 	pthread_mutex_destroy(&rsrc->print);
 	pthread_mutex_destroy(&rsrc->last_eat_time_mutex);
-	pthread_mutex_destroy(&rsrc->philo_stop_mutex);
 	pthread_mutex_destroy(&rsrc->philo_done_mutex);
+	pthread_mutex_destroy(&rsrc->philo_stop_mutex);
 }

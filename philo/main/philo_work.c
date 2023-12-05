@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 21:15:12 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/03 15:39:18 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:24:47 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 void	philo_eat(t_philo *philo, t_resource *rsrc)
 {
-	pthread_mutex_lock(&rsrc->fork[philo->left]);
+	pthread_mutex_lock(&rsrc->forks_mutex[philo->left]);
+	rsrc->forks[philo->left] = philo->id;
 	philo_print(rsrc, philo->id, "has taken a fork");
 	if (rsrc->num_of_philo != 1)
 	{
-		pthread_mutex_lock(&rsrc->fork[philo->right]);
+		pthread_mutex_lock(&rsrc->forks_mutex[philo->right]);
+		rsrc->forks[philo->right] = philo->id;
 		philo_print(rsrc, philo->id, "has taken a fork");
 		philo_print(rsrc, philo->id, "is eating");
 		pthread_mutex_lock(&rsrc->last_eat_time_mutex);
@@ -26,9 +28,11 @@ void	philo_eat(t_philo *philo, t_resource *rsrc)
 		pthread_mutex_unlock(&rsrc->last_eat_time_mutex);
 		philo->cnt_to_eat += 1;
 		spend_time(rsrc, rsrc->time_to_eat);
-		pthread_mutex_unlock(&rsrc->fork[philo->right]);
+		rsrc->forks[philo->right] = -1;
+		pthread_mutex_unlock(&rsrc->forks_mutex[philo->right]);
 	}
-	pthread_mutex_unlock(&rsrc->fork[philo->left]);
+	rsrc->forks[philo->left] = -1;
+	pthread_mutex_unlock(&rsrc->forks_mutex[philo->left]);
 }
 
 void	philo_sleep(t_philo *philo, t_resource *rsrc)
@@ -66,7 +70,7 @@ void	*philo_work(void *argv)
 		if (is_philo_stop(rsrc))
 			break ;
 		if (philo->id % 2 == 1)
-			usleep(500);
+			usleep(100);
 		philo_eat(philo, rsrc);
 		if (rsrc->num_of_philo == 1)
 			spend_time(rsrc, rsrc->time_to_sleep);
