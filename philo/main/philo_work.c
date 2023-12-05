@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 21:15:12 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/05 14:24:47 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:04:35 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*philo_work(void *argv)
 		if (is_philo_stop(rsrc))
 			break ;
 		if (philo->id % 2 == 1)
-			usleep(100);
+			usleep(500);
 		philo_eat(philo, rsrc);
 		if (rsrc->num_of_philo == 1)
 			spend_time(rsrc, rsrc->time_to_sleep);
