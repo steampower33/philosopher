@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:48:00 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/05 13:48:20 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:28:52 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_argv(int argc, char **argv, t_resource *rsrc)
 	if (argc == 6)
 	{
 		rsrc->max_eat = ft_atoi(argv[5]);
-		if (rsrc->max_eat < 0)
+		if (rsrc->max_eat <= 0)
 			return (1);
 	}
 	return (0);
