@@ -6,7 +6,7 @@
 /*   By: seunlee2 <seunlee2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:48:00 by seunlee2          #+#    #+#             */
-/*   Updated: 2023/12/05 14:28:52 by seunlee2         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:13:08 by seunlee2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,3 @@ int	init_philo(t_philo **philo, t_resource *rsrc)
 	}
 	return (0);
 }
-
